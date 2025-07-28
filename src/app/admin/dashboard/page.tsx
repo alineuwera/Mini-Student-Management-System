@@ -7,7 +7,7 @@ import ProtectedRoute from "@/app/components/ProtectedRoute";
 
 export default function AdminDashboard() {
   const { data: session } = useSession();
-  const user = session?.user;
+  // const user = session?.user;
 
   // Temporary mock stats — replace with real API/data
   const totalStudents = 8;

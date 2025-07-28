@@ -2,8 +2,15 @@
 
 import { useEffect, useState } from "react";
 
+type User = {
+  id: string;
+  fullName: string;
+  email: string;
+  role: string;
+};
+
 // Fake user for now
-const mockUser = {
+const mockUser: User = {
   id: "1",
   fullName: "Aline Uwera",
   email: "aline.admin@example.com",
@@ -11,11 +18,11 @@ const mockUser = {
 };
 
 export function useAuth() {
-  const [user, setUser] = useState<any | null>(null);
+  const [user, setUser] = useState<User | null>(null); // ✅ Replaced `any` with `User`
 
   useEffect(() => {
     // Simulate checking auth from localStorage or cookie
-    const savedUser = JSON.parse(localStorage.getItem("user") || "null");
+    const savedUser = JSON.parse(localStorage.getItem("user") || "null") as User | null;
     if (savedUser) {
       setUser(savedUser);
     } else {

@@ -25,7 +25,7 @@ export default function ProtectedRoute({ children, allowedRoles }: Props) {
     ) {
       router.push("/unauthorized"); // Optional: make this page
     }
-  }, [status, session]);
+  }, [status, session, allowedRoles, router]);
 
   if (status === "loading") {
     return (
