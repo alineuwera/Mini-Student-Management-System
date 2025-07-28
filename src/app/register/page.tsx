@@ -1,63 +1,83 @@
 "use client";
 
-import { useState } from "react";
-import { Input } from "@/app/components/Input";
-import { Button } from "@/app/components/Button";
+import { useForm } from "react-hook-form";
+import toast from "react-hot-toast";
+import { Input } from "../components/Input";
+import { Button } from "../components/Button";
+import { useRouter } from "next/navigation"; // ✅ Import this
+
+type FormData = {
+  fullName: string;
+  email: string;
+  password: string;
+  confirmPassword: string;
+};
 
 export default function RegisterPage() {
-  const [fullName, setFullName] = useState("");
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
-  const [confirm, setConfirm] = useState("");
+  const router = useRouter(); // ✅ Use the router
 
-  const handleSubmit = (e: React.FormEvent) => {
-    e.preventDefault();
+  const {
+    register,
+    handleSubmit,
+    watch,
+    formState: { errors, isSubmitting },
+  } = useForm<FormData>();
 
-    if (password !== confirm) {
-      alert("Passwords do not match!");
+  const onSubmit = async (data: FormData) => {
+    if (data.password !== data.confirmPassword) {
+      toast.error("Passwords do not match!");
       return;
     }
 
-    // Next: Connect to backend API
-    console.log({ fullName, email, password });
+    toast.loading("Registering...");
+    await new Promise((r) => setTimeout(r, 1000));
+    toast.dismiss();
+    toast.success("Registered successfully!");
+
+    // ✅ Redirect to login page
+    router.push("/login");
   };
 
   return (
     <div className="min-h-screen flex items-center justify-center bg-gray-100">
       <form
-        onSubmit={handleSubmit}
+        onSubmit={handleSubmit(onSubmit)}
         className="bg-white p-8 rounded shadow w-96 space-y-4"
       >
         <h1 className="text-2xl font-bold text-center">Register</h1>
+
         <Input
-          type="text"
           placeholder="Full Name"
-          value={fullName}
-          onChange={(e) => setFullName(e.target.value)}
-          required
+          {...register("fullName", { required: "Full name is required" })}
         />
+        {errors.fullName && (
+          <p className="text-red-500 text-sm">{errors.fullName.message}</p>
+        )}
+
         <Input
           type="email"
           placeholder="Email"
-          value={email}
-          onChange={(e) => setEmail(e.target.value)}
-          required
+          {...register("email", { required: "Email is required" })}
         />
+        {errors.email && (
+          <p className="text-red-500 text-sm">{errors.email.message}</p>
+        )}
+
         <Input
           type="password"
           placeholder="Password"
-          value={password}
-          onChange={(e) => setPassword(e.target.value)}
-          required
+          {...register("password", { required: "Password is required" })}
         />
+
         <Input
           type="password"
           placeholder="Confirm Password"
-          value={confirm}
-          onChange={(e) => setConfirm(e.target.value)}
-          required
+          {...register("confirmPassword", { required: "Confirm your password" })}
         />
-        <Button type="submit">Create Account</Button>
+
+        <Button type="submit" disabled={isSubmitting}>
+          {isSubmitting ? "Registering..." : "Register"}
+        </Button>
       </form>
     </div>
   );

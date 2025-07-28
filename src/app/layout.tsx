@@ -2,7 +2,8 @@
 import "./globals.css";
 import type { Metadata } from "next";
 import Navbar from "./components/Navbar";
-import SessionProviderWrapper from "./providers/SessionProviderWrapper"; // 👈 Import wrapper
+import SessionProviderWrapper from "./providers/SessionProviderWrapper";
+import { Toaster } from "react-hot-toast";
 
 export const metadata: Metadata = {
   title: "Student Management",
@@ -19,6 +20,7 @@ export default function RootLayout({
       <body className="bg-gray-50">
         <SessionProviderWrapper>
           <Navbar />
+          <Toaster position="top-right" />
           <main>{children}</main>
         </SessionProviderWrapper>
       </body>

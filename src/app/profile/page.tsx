@@ -3,6 +3,7 @@
 import { useState } from "react";
 import { Input } from "@/app/components/Input";
 import { Button } from "@/app/components/Button";
+import ProtectedRoute from "../components/ProtectedRoute";
 
 export default function ProfilePage() {
   const [profile, setProfile] = useState({
@@ -25,6 +26,7 @@ export default function ProfilePage() {
   };
 
   return (
+    <ProtectedRoute allowedRoles={["student", "admin"]}>
     <div className="max-w-2xl mx-auto mt-12 bg-white p-8 rounded shadow">
       <h1 className="text-2xl font-bold mb-6 text-blue-600">Edit Profile</h1>
       <form onSubmit={handleSubmit} className="space-y-4">
@@ -67,5 +69,6 @@ export default function ProfilePage() {
         <Button type="submit">Save Changes</Button>
       </form>
     </div>
+    </ProtectedRoute>
   );
 }
