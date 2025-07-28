@@ -6,7 +6,7 @@ import SessionProviderWrapper from "./providers/SessionProviderWrapper";
 import { Toaster } from "react-hot-toast";
 
 export const metadata: Metadata = {
-  title: "Student Management",
+  title: "SMS",
   description: "Mini Student Management System",
 };
 

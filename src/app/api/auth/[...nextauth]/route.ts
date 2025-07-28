@@ -6,7 +6,7 @@ import type { NextAuthOptions } from "next-auth";
 const users = [
   {
     id: "1",
-    name: "Aline Uwimana",
+    name: "Aline Uwera",
     email: "aline@example.com",
     password: "aline123",
     role: "student",

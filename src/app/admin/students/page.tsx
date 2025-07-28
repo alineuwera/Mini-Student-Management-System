@@ -55,7 +55,7 @@ export default function AdminStudentPage() {
     setStudents([
       {
         id: "1",
-        name: "Aline Uwimana",
+        name: "Aline Uwera",
         email: "aline@example.com",
         course: "Software Engineering",
         enrollmentYear: "2023",

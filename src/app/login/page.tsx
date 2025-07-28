@@ -21,7 +21,7 @@ export default function LoginPage() {
     formState: { errors, isSubmitting },
   } = useForm<FormData>();
 
-  const onSubmit = async (data: any) => {
+  const onSubmit = async (data: FormData) => {
     toast.loading("Logging in...");
 
     const res = await signIn("credentials", {
@@ -34,7 +34,19 @@ export default function LoginPage() {
 
     if (res?.ok) {
       toast.success("Login successful!");
-      router.push("/dashboard");
+
+      // Wait a bit and fetch session role
+      setTimeout(async () => {
+        const response = await fetch("/api/auth/session");
+        const session = await response.json();
+        const role = session?.user?.role;
+
+        if (role === "admin") {
+          router.push("/admin/dashboard");
+        } else {
+          router.push("/student/dashboard");
+        }
+      }, 500);
     } else {
       toast.error("Invalid email or password");
     }
