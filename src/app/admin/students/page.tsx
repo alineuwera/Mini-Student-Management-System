@@ -75,7 +75,9 @@ export default function AdminStudentPage() {
   }, []);
 
   const handleDelete = (id: string) => {
-    const confirm = window.confirm("Are you sure you want to delete this student?");
+    const confirm = window.confirm(
+      "Are you sure you want to delete this student?"
+    );
     if (confirm) {
       setStudents(students.filter((s) => s.id !== id));
     }
@@ -84,7 +86,9 @@ export default function AdminStudentPage() {
   const handleToggleRole = (id: string) => {
     setStudents((prev) =>
       prev.map((s) =>
-        s.id === id ? { ...s, role: s.role === "admin" ? "student" : "admin" } : s
+        s.id === id
+          ? { ...s, role: s.role === "admin" ? "student" : "admin" }
+          : s
       )
     );
   };
@@ -114,13 +118,15 @@ export default function AdminStudentPage() {
   return (
     <ProtectedRoute allowedRoles={["admin"]}>
       <div className="max-w-5xl mx-auto mt-10 bg-white p-6 rounded shadow">
-        <h1 className="text-2xl font-bold text-blue-600 mb-6">Manage Students</h1>
+        <h1 className="text-2xl font-bold text-green-700 mb-6">
+          Manage Students
+        </h1>
 
         <div className="flex justify-between items-center mb-4">
           <input
             type="text"
             placeholder="Search by name or course..."
-            className="p-2 border rounded w-64"
+            className="p-2 border rounded w-64 focus:ring-2 focus:ring-green-500 focus:border-green-500 focus:outline-none transition-all duration-200"
             onChange={(e) => setSearchTerm(e.target.value)}
           />
         </div>
@@ -137,37 +143,55 @@ export default function AdminStudentPage() {
                 type="text"
                 placeholder="Name"
                 {...register("name", { required: "Name is required" })}
-                className="p-2 border rounded"
+                className="p-2 border rounded focus:ring-2 focus:ring-green-500 focus:border-green-500 focus:outline-none transition-all duration-200"
               />
-              {errors.name && <p className="text-red-500 text-sm col-span-2">{errors.name.message}</p>}
+              {errors.name && (
+                <p className="text-red-500 text-sm col-span-2">
+                  {errors.name.message}
+                </p>
+              )}
 
               <input
                 type="email"
                 placeholder="Email"
                 {...register("email", { required: "Email is required" })}
-                className="p-2 border rounded"
+                className="p-2 border rounded focus:ring-2 focus:ring-green-500 focus:border-green-500 focus:outline-none transition-all duration-200"
               />
-              {errors.email && <p className="text-red-500 text-sm col-span-2">{errors.email.message}</p>}
+              {errors.email && (
+                <p className="text-red-500 text-sm col-span-2">
+                  {errors.email.message}
+                </p>
+              )}
 
               <input
                 type="text"
                 placeholder="Course"
                 {...register("course", { required: "Course is required" })}
-                className="p-2 border rounded"
+                className="p-2 border rounded focus:ring-2 focus:ring-green-500 focus:border-green-500 focus:outline-none transition-all duration-200"
               />
-              {errors.course && <p className="text-red-500 text-sm col-span-2">{errors.course.message}</p>}
+              {errors.course && (
+                <p className="text-red-500 text-sm col-span-2">
+                  {errors.course.message}
+                </p>
+              )}
 
               <input
                 type="text"
                 placeholder="Enrollment Year"
-                {...register("enrollmentYear", { required: "Year is required" })}
-                className="p-2 border rounded"
+                {...register("enrollmentYear", {
+                  required: "Year is required",
+                })}
+                className="p-2 border rounded focus:ring-2 focus:ring-green-500 focus:border-green-500 focus:outline-none transition-all duration-200"
               />
-              {errors.enrollmentYear && <p className="text-red-500 text-sm col-span-2">{errors.enrollmentYear.message}</p>}
+              {errors.enrollmentYear && (
+                <p className="text-red-500 text-sm col-span-2">
+                  {errors.enrollmentYear.message}
+                </p>
+              )}
 
               <select
                 {...register("status", { required: "Status is required" })}
-                className="p-2 border rounded col-span-2"
+                className="p-2 border rounded col-span-2 focus:ring-2 focus:ring-green-500 focus:border-green-500 focus:outline-none transition-all duration-200"
                 defaultValue="Active"
               >
                 <option value="Active">Active</option>
@@ -194,16 +218,20 @@ export default function AdminStudentPage() {
           </div>
         )}
 
-         {editingStudent && (
-          <div className="bg-yellow-100 p-6 rounded mb-6">
-            <h2 className="text-lg font-bold mb-4 text-yellow-800">Edit Student</h2>
+        {editingStudent && (
+          <div className="bg-gray-100 p-6 rounded mb-6">
+            <h2 className="text-lg font-bold mb-4 text-green-700">
+              Edit Student
+            </h2>
             <form
               onSubmit={(e) => {
                 e.preventDefault();
                 toast.loading("Updating student...");
                 setTimeout(() => {
                   setStudents((prev) =>
-                    prev.map((s) => (s.id === editingStudent.id ? editingStudent : s))
+                    prev.map((s) =>
+                      s.id === editingStudent.id ? editingStudent : s
+                    )
                   );
                   setEditingStudent(null);
                   toast.dismiss();
@@ -220,26 +248,32 @@ export default function AdminStudentPage() {
                   setEditingStudent({ ...editingStudent, name: e.target.value })
                 }
                 required
-                className="p-2 border rounded"
+                className="p-2 border rounded focus:ring-2 focus:ring-green-500 focus:border-green-500 focus:outline-none transition-all duration-200"
               />
               <input
                 type="email"
                 placeholder="Email"
                 value={editingStudent.email}
                 onChange={(e) =>
-                  setEditingStudent({ ...editingStudent, email: e.target.value })
+                  setEditingStudent({
+                    ...editingStudent,
+                    email: e.target.value,
+                  })
                 }
                 required
-                className="p-2 border rounded"
+                className="p-2 border rounded focus:ring-2 focus:ring-green-500 focus:border-green-500 focus:outline-none transition-all duration-200"
               />
               <input
                 type="text"
                 placeholder="Course"
                 value={editingStudent.course}
                 onChange={(e) =>
-                  setEditingStudent({ ...editingStudent, course: e.target.value })
+                  setEditingStudent({
+                    ...editingStudent,
+                    course: e.target.value,
+                  })
                 }
-                className="p-2 border rounded"
+                className="p-2 border rounded focus:ring-2 focus:ring-green-500 focus:border-green-500 focus:outline-none transition-all duration-200 "
               />
               <input
                 type="text"
@@ -251,7 +285,7 @@ export default function AdminStudentPage() {
                     enrollmentYear: e.target.value,
                   })
                 }
-                className="p-2 border rounded"
+                className="p-2 border rounded focus:ring-2 focus:ring-green-500 focus:border-green-500 focus:outline-none transition-all duration-200"
               />
               <select
                 value={editingStudent.status}
@@ -261,7 +295,7 @@ export default function AdminStudentPage() {
                     status: e.target.value as Student["status"],
                   })
                 }
-                className="p-2 border rounded col-span-2"
+                className="p-2 border rounded col-span-2 focus:ring-2 focus:ring-green-500 focus:border-green-500 focus:outline-none transition-all duration-200"
               >
                 <option value="Active">Active</option>
                 <option value="Graduated">Graduated</option>
@@ -344,7 +378,6 @@ export default function AdminStudentPage() {
             Next
           </Button>
         </div>
-
       </div>
     </ProtectedRoute>
   );

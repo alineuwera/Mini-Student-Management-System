@@ -17,7 +17,7 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en">
-      <body className="bg-gray-50">
+      <body className="bg-gradient-to-br from-green-100 via-gray-100 to-lime-100">
         <SessionProviderWrapper>
           <Navbar />
           <Toaster position="top-right" />

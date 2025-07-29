@@ -9,6 +9,8 @@ import {
 import Image from "next/image";
 import { useState } from "react";
 import toast from "react-hot-toast";
+import { Input } from "@/app/components/Input";
+import { Button } from "@/app/components/Button";
 
 export default function AdminProfile() {
   const { data: session } = useSession();
@@ -46,10 +48,10 @@ export default function AdminProfile() {
 
   return (
     <ProtectedRoute allowedRoles={["admin"]}>
-      <div className="max-w-3xl mx-auto mt-10 p-6">
-        <h1 className="text-3xl font-bold text-blue-600 mb-6">Admin Profile</h1>
+      <div className="max-w-5xl mx-auto mt-10 p-4 sm:p-6 min-h-screen">
+        <h1 className="text-2xl sm:text-3xl font-bold text-green-700 mb-6">Admin Profile</h1>
 
-        <div className="bg-white p-6 rounded shadow">
+        <div className="bg-white p-6 rounded-lg shadow-lg animate-fade-in">
           <div className="flex items-center gap-4 mb-6">
             {avatarPreview ? (
               <Image
@@ -63,37 +65,37 @@ export default function AdminProfile() {
               <UserCircle className="w-16 h-16 text-gray-400" />
             )}
             <div>
-              <p className="text-lg font-semibold">{formData.name}</p>
+              <p className="text-lg font-semibold text-green-700">{formData.name}</p>
               <p className="text-sm text-gray-500">{formData.email}</p>
             </div>
           </div>
 
           {editing ? (
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-              <input
+              <Input
                 name="name"
                 value={formData.name}
                 onChange={handleChange}
-                className="p-2 border rounded"
                 placeholder="Full Name"
+                className="w-full p-3 border border-gray-300 rounded-md focus:ring-2 focus:ring-green-500 focus:border-green-500 transition-all duration-200"
               />
-              <input
+              <Input
                 name="email"
                 value={formData.email}
                 onChange={handleChange}
-                className="p-2 border rounded"
                 placeholder="Email"
+                className="w-full p-3 border border-gray-300 rounded-md focus:ring-2 focus:ring-green-500 focus:border-green-500 transition-all duration-200"
               />
-              <input
+              <Input
                 name="phone"
                 value={formData.phone}
                 onChange={handleChange}
-                className="p-2 border rounded"
                 placeholder="Phone Number"
+                className="w-full p-3 border border-gray-300 rounded-md focus:ring-2 focus:ring-green-500 focus:border-green-500 transition-all duration-200"
               />
 
               <div className="col-span-2">
-                <label className="block text-sm font-medium text-gray-700 mb-1">
+                <label className="block text-sm font-medium text-green-700 mb-1">
                   Profile Picture
                 </label>
                 <div className="flex items-center gap-4">
@@ -108,8 +110,8 @@ export default function AdminProfile() {
                   ) : (
                     <UserCircle className="w-16 h-16 text-gray-400" />
                   )}
-                  <label className="cursor-pointer bg-blue-50 px-4 py-2 rounded border border-blue-200 text-sm flex items-center gap-2 hover:bg-blue-100">
-                    <UploadCloud className="w-4 h-4" /> Upload
+                  <label className="cursor-pointer bg-green-50 px-4 py-2 rounded-md border border-green-200 text-sm text-green-700 flex items-center gap-2 hover:bg-green-100 transition-colors duration-200">
+                    <UploadCloud className="w-4 h-4 text-green-600" /> Upload
                     <input
                       type="file"
                       accept="image/*"
@@ -121,36 +123,36 @@ export default function AdminProfile() {
               </div>
 
               <div className="col-span-2 flex gap-4 mt-4">
-                <button
-                  className="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700"
+                <Button
+                  className="bg-green-500 text-white px-4 py-2 rounded-md hover:bg-green-600 transition-colors duration-200"
                   onClick={handleSave}
                 >
                   Save
-                </button>
-                <button
-                  className="bg-gray-300 text-black px-4 py-2 rounded hover:bg-gray-400"
+                </Button>
+                <Button
+                  className="bg-green-300 text-gray-800 px-4 py-2 rounded-md hover:bg-green-400 transition-colors duration-200"
                   onClick={() => setEditing(false)}
                 >
                   Cancel
-                </button>
+                </Button>
               </div>
             </div>
           ) : (
             <>
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                <p><span className="font-semibold">Name:</span> {formData.name}</p>
-                <p><span className="font-semibold">Email:</span> {formData.email}</p>
-                <p><span className="font-semibold">Phone:</span> {formData.phone || "N/A"}</p>
-                <p><span className="font-semibold">Role:</span> {formData.role}</p>
+                <p><span className="font-semibold text-green-700">Name:</span> {formData.name}</p>
+                <p><span className="font-semibold text-green-700">Email:</span> {formData.email}</p>
+                <p><span className="font-semibold text-green-700">Phone:</span> {formData.phone || "N/A"}</p>
+                <p><span className="font-semibold text-green-700">Role:</span> {formData.role}</p>
               </div>
 
               <div className="mt-6">
-                <button
-                  className="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700"
+                <Button
+                  className="bg-green-500 text-white px-4 py-2 rounded-md hover:bg-green-600 transition-colors duration-200"
                   onClick={() => setEditing(true)}
                 >
                   Edit Profile
-                </button>
+                </Button>
               </div>
             </>
           )}
