@@ -14,15 +14,22 @@ const users: AppUser[] = [
   {
     id: "1",
     name: "Aline Uwera",
-    email: "aline@example.com",
-    password: "aline123",
+    email: "aline@gmail.com",
+    password: "aline0000",
+    role: "student",
+  },
+   {
+    id: "2",
+    name: "Ishimwe Alice",
+    email: "aliceishimwe@gmail.com",
+    password: "alice1111",
     role: "student",
   },
   {
-    id: "2",
+    id: "3",
     name: "Admin Boss",
-    email: "admin@example.com",
-    password: "admin123",
+    email: "admin@gmail.com",
+    password: "admin0000",
     role: "admin",
   },
 ];

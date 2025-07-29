@@ -23,7 +23,7 @@ export default function Navbar() {
         {user && (
           <>
             {/* Admin-specific link */}
-            {user.role === "admin" && <Link href="/admin/">Profile</Link>}
+            {user.role === "admin" && <Link href="/admin/profile">Profile</Link>}
 
             <button
               onClick={() => signOut()}
