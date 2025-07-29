@@ -1,13 +1,9 @@
 "use client";
-
-import { useSession } from "next-auth/react";
 import Link from "next/link";
 import { Users, CheckCircle, BarChart } from "lucide-react";
 import ProtectedRoute from "@/app/components/ProtectedRoute";
 
 export default function AdminDashboard() {
-  const { data: session } = useSession();
-  // const user = session?.user;
 
   // Temporary mock stats — replace with real API/data
   const totalStudents = 8;

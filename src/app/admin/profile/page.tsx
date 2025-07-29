@@ -4,9 +4,7 @@ import { useSession } from "next-auth/react";
 import ProtectedRoute from "@/app/components/ProtectedRoute";
 import {
   UserCircle,
-  UploadCloud,
-  ShieldCheck,
-  Phone,
+  UploadCloud
 } from "lucide-react";
 import Image from "next/image";
 import { useState } from "react";
