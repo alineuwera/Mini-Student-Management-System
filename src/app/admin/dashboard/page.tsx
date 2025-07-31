@@ -12,6 +12,7 @@ export default function AdminDashboard() {
     totalStudents: 0,
     activeStudents: 0,
     graduatedStudents: 0,
+    droppedStudents: 0,
   });
 
   useEffect(() => {
@@ -25,6 +26,8 @@ export default function AdminDashboard() {
 
         if (!res.ok) throw new Error("Failed to fetch stats");
         const data = await res.json();
+        console.log("Fetched stats:", data);
+        
         setStats(data);
       } catch (error) {
         console.error("Error fetching stats:", error);
