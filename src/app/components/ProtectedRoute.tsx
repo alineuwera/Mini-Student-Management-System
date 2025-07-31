@@ -1,33 +1,28 @@
 "use client";
 
-import { useSession } from "next-auth/react";
 import { useRouter } from "next/navigation";
-import { ReactNode, useEffect } from "react";
+import { useEffect } from "react";
+import { useAuth } from "../context/AuthContext";
 
-type Props = {
-  children: ReactNode;
+export default function ProtectedRoute({
+  children,
+  allowedRoles,
+}: {
+  children: React.ReactNode;
   allowedRoles?: string[];
-};
-
-export default function ProtectedRoute({ children, allowedRoles }: Props) {
-  const { data: session, status } = useSession();
+}) {
+  const { user } = useAuth() || {};
   const router = useRouter();
 
   useEffect(() => {
-    if (status === "unauthenticated") {
+    if (!user) {
       router.push("/login");
+    } else if (allowedRoles && !allowedRoles.includes(user.role)) {
+      router.push("/unauthorized");
     }
+  }, [user, allowedRoles, router]);
 
-    if (
-      status === "authenticated" &&
-      allowedRoles &&
-      !allowedRoles.includes(session?.user?.role || "")
-    ) {
-      router.push("/unauthorized"); // Optional: make this page
-    }
-  }, [status, session, allowedRoles, router]);
-
-  if (status === "loading") {
+  if (!user) {
     return (
       <div className="h-screen flex items-center justify-center text-lg">
         Loading...

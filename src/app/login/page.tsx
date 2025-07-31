@@ -1,14 +1,13 @@
 "use client";
 
 import { useForm } from "react-hook-form";
-import { signIn } from "next-auth/react";
-import { useRouter } from "next/navigation";
 import toast from "react-hot-toast";
 import { Input } from "../components/Input";
 import { Button } from "../components/Button";
-import Link from "next/link";
+import { useRouter } from "next/navigation";
+import { useAuth } from "../context/AuthContext";
 
-type FormData = {
+type LoginData = {
   email: string;
   password: string;
 };
@@ -19,92 +18,73 @@ export default function LoginPage() {
     register,
     handleSubmit,
     formState: { errors, isSubmitting },
-  } = useForm<FormData>();
+  } = useForm<LoginData>();
 
-  const onSubmit = async (data: FormData) => {
+  const { login } = useAuth()!;
+
+  const onSubmit = async (data: LoginData) => {
     toast.loading("Logging in...");
 
-    const res = await signIn("credentials", {
-      redirect: false,
-      email: data.email,
-      password: data.password,
-    });
+    try {
+      const res = await fetch(`http://localhost:4000/api/auth/login`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(data),
+      });
 
-    toast.dismiss();
+      const result = await res.json();
+      toast.dismiss();
 
-    if (res?.ok) {
+      if (!res.ok) {
+        toast.error(result.message || "Login failed");
+        return;
+      }
+
+      // Save in context (also saves to localStorage)
+      login(result.user, result.token);
+
       toast.success("Login successful!");
+      console.log("TOKEN FROM BACKEND:", result.token);
 
-      // Wait a bit and fetch session role
-      setTimeout(async () => {
-        const response = await fetch("/api/auth/session");
-        const session = await response.json();
-        const role = session?.user?.role;
-
-        if (role === "admin") {
-          router.push("/admin/dashboard");
-        } else {
-          router.push("/student/dashboard");
-        }
-      }, 500);
-    } else {
-      toast.error("Invalid email or password");
+      // Redirect based on role
+      router.push(result.user.role === "admin" ? "/admin/dashboard" : "/student/dashboard");
+    } catch (error) {
+      toast.dismiss();
+      toast.error("Something went wrong!");
     }
   };
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-green-100 via-gray-100 to-lime-100 p-4 sm:p-6">
+    <div className="min-h-screen flex items-center justify-center bg-gray-100">
       <form
         onSubmit={handleSubmit(onSubmit)}
-        className="bg-white p-6 sm:p-8 rounded-lg shadow-lg w-full max-w-md space-y-6 animate-fade-in"
+        className="bg-white p-8 rounded shadow w-96 space-y-4"
       >
-        <h1 className="text-2xl sm:text-3xl font-bold text-center text-green-700">
-          Login to SMS
-        </h1>
+        <h1 className="text-2xl font-bold text-center">Login</h1>
 
-        <div className="space-y-4">
-          <div>
-            <Input
-              type="email"
-              placeholder="Email"
-              className="w-full p-3 border border-gray-300 rounded-md focus:ring-2 focus:ring-green-500 focus:border-green-500 transition-all duration-200"
-              {...register("email", { required: "Email is required" })}
-            />
-            {errors.email && (
-              <p className="text-red-500 text-sm mt-1">{errors.email.message}</p>
-            )}
-          </div>
+        <Input
+          type="email"
+          placeholder="Email"
+          {...register("email", { required: "Email is required" })}
+        />
+        {errors.email && (
+          <p className="text-red-500 text-sm">{errors.email.message}</p>
+        )}
 
-          <div>
-            <Input
-              type="password"
-              placeholder="Password"
-              className="w-full p-3 border border-gray-300 rounded-md focus:ring-2 focus:ring-green-500 focus:border-green-500 transition-all duration-200"
-              {...register("password", { required: "Password is required" })}
-            />
-            {errors.password && (
-              <p className="text-red-500 text-sm mt-1">{errors.password.message}</p>
-            )}
-          </div>
-        </div>
+        <Input
+          type="password"
+          placeholder="Password"
+          {...register("password", { required: "Password is required" })}
+        />
+        {errors.password && (
+          <p className="text-red-500 text-sm">{errors.password.message}</p>
+        )}
 
-        <Button
-          type="submit"
-          disabled={isSubmitting}
-          className="w-full py-3 bg-green-600 text-white rounded-md hover:bg-green-700 transition-colors duration-200 disabled:bg-green-400 disabled:cursor-not-allowed"
-        >
+        <Button type="submit" disabled={isSubmitting}>
           {isSubmitting ? "Logging in..." : "Login"}
         </Button>
-
-        <p className="text-sm text-center text-gray-600">
-          Don&apos;t have an account?{" "}
-          <Link
-            href="/register"
-            className="text-green-600 hover:text-green-800 font-medium hover:underline transition-colors duration-200"
-          >
-            Sign up
-          </Link>
-        </p>
       </form>
     </div>
   );

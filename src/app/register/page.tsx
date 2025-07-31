@@ -5,17 +5,18 @@ import toast from "react-hot-toast";
 import { Input } from "../components/Input";
 import { Button } from "../components/Button";
 import { useRouter } from "next/navigation";
-import Link from "next/link";
 
 type FormData = {
   fullName: string;
   email: string;
+  phone: string;
   password: string;
   confirmPassword: string;
 };
 
 export default function RegisterPage() {
   const router = useRouter();
+
   const {
     register,
     handleSubmit,
@@ -29,88 +30,89 @@ export default function RegisterPage() {
     }
 
     toast.loading("Registering...");
-    await new Promise((r) => setTimeout(r, 1000));
-    toast.dismiss();
-    toast.success("Registered successfully!");
-    router.push("/login");
+
+    try {
+      const res = await fetch(`http://localhost:4000/api/auth/register`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          fullName: data.fullName,
+          email: data.email,
+          phone: data.phone,
+          password: data.password,
+        }),
+      });
+
+      const result = await res.json();
+      toast.dismiss();
+
+      if (!res.ok) {
+        toast.error(result.message || "Registration failed");
+        return;
+      }
+
+      toast.success("Registered successfully!");
+      router.push("/login");
+    } catch (err) {
+      toast.dismiss();
+      toast.error("Something went wrong!");
+    }
   };
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-green-100 via-gray-100 to-lime-100 p-4 sm:p-6">
+    <div className="min-h-screen flex items-center justify-center bg-gray-100">
       <form
         onSubmit={handleSubmit(onSubmit)}
-        className="bg-white p-6 sm:p-8 rounded-lg shadow-lg w-full max-w-md space-y-6 animate-fade-in"
+        className="bg-white p-8 rounded shadow w-96 space-y-4"
       >
-        <h1 className="text-2xl sm:text-3xl font-bold text-center text-green-700">
-          Register for SMS
-        </h1>
+        <h1 className="text-2xl font-bold text-center">Register</h1>
 
-        <div className="space-y-4">
-          <div>
-            <Input
-              placeholder="Full Name"
-              className="w-full p-3 border border-gray-300 rounded-md focus:ring-2 focus:ring-green-500 focus:border-green-500 transition-all duration-200"
-              {...register("fullName", { required: "Full name is required" })}
-            />
-            {errors.fullName && (
-              <p className="text-red-500 text-sm mt-1">{errors.fullName.message}</p>
-            )}
-          </div>
+        <Input
+          placeholder="Full Name"
+          {...register("fullName", { required: "Full name is required" })}
+        />
+        {errors.fullName && (
+          <p className="text-red-500 text-sm">{errors.fullName.message}</p>
+        )}
 
-          <div>
-            <Input
-              type="email"
-              placeholder="Email"
-              className="w-full p-3 border border-gray-300 rounded-md focus:ring-2 focus:ring-green-500 focus:border-green-500 transition-all duration-200"
-              {...register("email", { required: "Email is required" })}
-            />
-            {errors.email && (
-              <p className="text-red-500 text-sm mt-1">{errors.email.message}</p>
-            )}
-          </div>
+        <Input
+          type="email"
+          placeholder="Email"
+          {...register("email", { required: "Email is required" })}
+        />
+        {errors.email && (
+          <p className="text-red-500 text-sm">{errors.email.message}</p>
+        )}
 
-          <div>
-            <Input
-              type="password"
-              placeholder="Password"
-              className="w-full p-3 border border-gray-300 rounded-md focus:ring-2 focus:ring-green-500 focus:border-green-500 transition-all duration-200"
-              {...register("password", { required: "Password is required" })}
-            />
-            {errors.password && (
-              <p className="text-red-500 text-sm mt-1">{errors.password.message}</p>
-            )}
-          </div>
+        <Input
+          type="text"
+          placeholder="Phone Number"
+          {...register("phone", { required: "Phone number is required" })}
+        />
+        {errors.phone && (
+          <p className="text-red-500 text-sm">{errors.phone.message}</p>
+        )}
 
-          <div>
-            <Input
-              type="password"
-              placeholder="Confirm Password"
-              className="w-full p-3 border border-gray-300 rounded-md focus:ring-2 focus:ring-green-500 focus:border-green-500 transition-all duration-200"
-              {...register("confirmPassword", { required: "Confirm your password" })}
-            />
-            {errors.confirmPassword && (
-              <p className="text-red-500 text-sm mt-1">{errors.confirmPassword.message}</p>
-            )}
-          </div>
-        </div>
+        <Input
+          type="password"
+          placeholder="Password"
+          {...register("password", { required: "Password is required" })}
+        />
 
-        <Button
-          type="submit"
-          disabled={isSubmitting}
-          className="w-full py-3 bg-green-600 text-white rounded-md hover:bg-green-700 transition-colors duration-200 disabled:bg-green-400 disabled:cursor-not-allowed"
-        >
+        <Input
+          type="password"
+          placeholder="Confirm Password"
+          {...register("confirmPassword", { required: "Confirm your password" })}
+        />
+        {errors.confirmPassword && (
+          <p className="text-red-500 text-sm">{errors.confirmPassword.message}</p>
+        )}
+
+        <Button type="submit" disabled={isSubmitting}>
           {isSubmitting ? "Registering..." : "Register"}
         </Button>
-
-        <p className="text-sm text-center text-gray-600">
-          Already have an account?{" "}
-          <Link
-            href="/login"
-            className="text-green-600 hover:text-green-800 font-medium hover:underline transition-colors duration-200"
-          >
-            Sign in
-          </Link>
-        </p>
       </form>
     </div>
   );

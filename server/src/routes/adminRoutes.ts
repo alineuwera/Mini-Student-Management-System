@@ -140,5 +140,22 @@ router.post(
     res.json({ message: "Profile picture updated", user: updated });
   }
 );
+// GET /api/admin/students/stats
+router.get("/students/stats", auth(["admin"]), async (_req, res) => {
+  try {
+    const total = await User.countDocuments({ role: "student" });
+    const active = await User.countDocuments({ role: "student", status: "Active" });
+    const graduated = await User.countDocuments({ role: "student", status: "Graduated" });
+
+    res.json({
+      totalStudents: total,
+      activeStudents: active,
+      graduatedStudents: graduated,
+    });
+  } catch (error) {
+    console.error("Error fetching student stats:", error);
+    res.status(500).json({ message: "Failed to fetch stats" });
+  }
+});
 
 export default router;
