@@ -55,7 +55,7 @@ export default function RegisterPage() {
 
       toast.success("Registered successfully!");
       router.push("/login");
-    } catch (err) {
+    } catch {
       toast.dismiss();
       toast.error("Something went wrong!");
     }
@@ -107,7 +107,9 @@ export default function RegisterPage() {
           {...register("confirmPassword", { required: "Confirm your password" })}
         />
         {errors.confirmPassword && (
-          <p className="text-red-500 text-sm">{errors.confirmPassword.message}</p>
+          <p className="text-red-500 text-sm">
+            {errors.confirmPassword.message}
+          </p>
         )}
 
         <Button type="submit" disabled={isSubmitting}>

@@ -8,7 +8,7 @@ import { connectDB } from "./config/db";
 import authRoutes from "./routes/authRoutes";
 import userRoutes from "./routes/userRoutes";
 import adminRoutes from "./routes/adminRoutes";
-import path = require("path");
+import path from "path";  // <-- fixed here
 
 dotenv.config();
 connectDB();
@@ -26,4 +26,4 @@ app.use("/api/users", userRoutes);
 app.use("/api/admin", adminRoutes);
 
 const PORT = process.env.PORT || 4000;
-app.listen(PORT, () => console.log(`🚀 Server running on port ${PORT}`));
+app.listen(PORT, () => console.log(` Server running on port ${PORT}`));

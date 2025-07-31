@@ -1,13 +1,13 @@
-// pages/api/admin/students.ts
-import { getServerSession } from "next-auth";
+import { getServerSession } from "next-auth/next";
 import { authOptions } from "@/lib/authOptions";
-import { NextApiRequest, NextApiResponse } from "next";
+import { NextResponse } from "next/server";
 
-export default async function handler(req:NextApiRequest, res:NextApiResponse) {
-  const session = await getServerSession(req, res, authOptions);
+export async function GET() {
+  const session = await getServerSession(authOptions);
+
   if (!session || session.user.role !== "admin") {
-    return res.status(401).json({ message: "Unauthorized" });
+    return NextResponse.json({ message: "Unauthorized" }, { status: 401 });
   }
 
-  // continue with DB logic...
+  return NextResponse.json({ message: "Authorized - students data here" });
 }

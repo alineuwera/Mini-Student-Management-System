@@ -50,7 +50,7 @@ export default function LoginPage() {
 
       // Redirect based on role
       router.push(result.user.role === "admin" ? "/admin/dashboard" : "/student/dashboard");
-    } catch (error) {
+    } catch {
       toast.dismiss();
       toast.error("Something went wrong!");
     }

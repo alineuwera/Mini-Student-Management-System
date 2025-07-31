@@ -8,7 +8,6 @@ import {
   GraduationCap,
   BookOpenCheck,
   CalendarCheck2,
-  UploadCloud,
   UserCircle,
 } from "lucide-react";
 import { Input } from "@/app/components/Input";
@@ -60,19 +59,24 @@ export default function StudentDashboard() {
         if (!res.ok) throw new Error(user.message);
 
         setFormData(user);
-       setAvatarPreview(user.imageUrl ? "http://localhost:4000" + user.imageUrl : null);
-
-      } catch (error: any) {
-        toast.error(error.message || "Failed to load profile.");
+        setAvatarPreview(
+          user.imageUrl ? "http://localhost:4000" + user.imageUrl : null
+        );
+      } catch (error: unknown) {
+        if (error instanceof Error) {
+          toast.error(error.message);
+        } else {
+          toast.error("Failed to load profile.");
+        }
       }
     };
 
     fetchProfile();
   }, [token, router]);
 
-  const handleChange = (
-    e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>
-  ) => {
+  const handleChange: React.ChangeEventHandler<
+    HTMLInputElement | HTMLSelectElement
+  > = (e) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
   };
 
@@ -100,8 +104,12 @@ export default function StudentDashboard() {
       toast.success("Profile picture updated!");
 
       setAvatarPreview("http://localhost:4000" + result.user.imageUrl);
-    } catch (err: any) {
-      toast.error(err.message || "Failed to upload picture");
+    } catch (err: unknown) {
+      if (err instanceof Error) {
+        toast.error(err.message);
+      } else {
+        toast.error("Failed to upload picture");
+      }
     }
   };
 
@@ -123,8 +131,12 @@ export default function StudentDashboard() {
 
       toast.success("Profile updated successfully!");
       setEditing(false);
-    } catch (err: any) {
-      toast.error(err.message || "Update failed");
+    } catch (err: unknown) {
+      if (err instanceof Error) {
+        toast.error(err.message);
+      } else {
+        toast.error("Update failed");
+      }
     }
   };
 
@@ -139,7 +151,7 @@ export default function StudentDashboard() {
         <Card
           icon={<CalendarCheck2 />}
           label="Enrollment Year"
-          value={formData.enrollmentYear || ''}
+          value={formData.enrollmentYear || ""}
         />
         <Card icon={<BookOpenCheck />} label="Status" value={formData.status} />
       </div>
@@ -193,7 +205,7 @@ function Card({
 }: {
   icon: React.ReactNode;
   label: string;
-  value: any;
+  value: string | number | null | undefined;
 }) {
   return (
     <div className="bg-white p-6 rounded-lg shadow-lg flex items-center gap-4">
@@ -214,8 +226,8 @@ function EditForm({
   onCancel,
 }: {
   formData: FormData;
-  onChange: any;
-  onUpload: any;
+  onChange: React.ChangeEventHandler<HTMLInputElement | HTMLSelectElement>;
+  onUpload: (e: React.ChangeEvent<HTMLInputElement>) => void;
   onSave: () => void;
   onCancel: () => void;
 }) {

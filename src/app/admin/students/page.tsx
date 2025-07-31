@@ -37,7 +37,7 @@ export default function AdminStudentPage() {
     register,
     handleSubmit,
     reset,
-    formState: { errors, isSubmitting },
+    formState: {isSubmitting },
   } = useForm<StudentForm>();
 
   const filteredStudents = students.filter(

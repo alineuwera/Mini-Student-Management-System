@@ -10,7 +10,7 @@ import Image from "next/image";
 import { UploadCloud, UserCircle } from "lucide-react";
 
 export default function AdminProfile() {
-  const { user, token } = useAuth()!;
+  const {token } = useAuth()!;
   const [editing, setEditing] = useState(false);
   const [avatarPreview, setAvatarPreview] = useState<string | null>(null);
 
