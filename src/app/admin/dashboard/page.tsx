@@ -18,7 +18,7 @@ export default function AdminDashboard() {
   useEffect(() => {
     const fetchStats = async () => {
       try {
-        const res = await fetch("http://localhost:4000/api/admin/students/stats", {
+        const res = await fetch("https://mini-student-management-system-1.onrender.com/api/admin/students/stats", {
           headers: {
             Authorization: `Bearer ${token}`,
           },

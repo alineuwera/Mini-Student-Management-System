@@ -49,7 +49,7 @@ export default function StudentDashboard() {
 
     const fetchProfile = async () => {
       try {
-        const res = await fetch("http://localhost:4000/api/users/me", {
+        const res = await fetch("https://mini-student-management-system-1.onrender.com/api/users/me", {
           headers: {
             Authorization: `Bearer ${token}`,
           },
@@ -60,7 +60,7 @@ export default function StudentDashboard() {
 
         setFormData(user);
         setAvatarPreview(
-          user.imageUrl ? "http://localhost:4000" + user.imageUrl : null
+          user.imageUrl ? "https://mini-student-management-system-1.onrender.com/" + user.imageUrl : null
         );
       } catch (error: unknown) {
         if (error instanceof Error) {
@@ -89,7 +89,7 @@ export default function StudentDashboard() {
 
     try {
       const res = await fetch(
-        "http://localhost:4000/api/users/me/profile-picture",
+        "https://mini-student-management-system-1.onrender.com/api/users/me/profile-picture",
         {
           method: "POST",
           headers: {
@@ -103,7 +103,7 @@ export default function StudentDashboard() {
       if (!res.ok) throw new Error(result.message);
       toast.success("Profile picture updated!");
 
-      setAvatarPreview("http://localhost:4000" + result.user.imageUrl);
+      setAvatarPreview("https://mini-student-management-system-1.onrender.com/" + result.user.imageUrl);
     } catch (err: unknown) {
       if (err instanceof Error) {
         toast.error(err.message);
@@ -117,7 +117,7 @@ export default function StudentDashboard() {
     if (!token) return;
 
     try {
-      const res = await fetch("http://localhost:4000/api/users/me", {
+      const res = await fetch("https://mini-student-management-system-1.onrender.com/api/users/me", {
         method: "PUT",
         headers: {
           Authorization: `Bearer ${token}`,
@@ -162,7 +162,7 @@ export default function StudentDashboard() {
         <div className="flex items-center gap-4 mb-6">
           {avatarPreview &&
           avatarPreview.trim() !== "" &&
-          avatarPreview !== "http://localhost:4000" ? (
+          avatarPreview !== "https://mini-student-management-system-1.onrender.com" ? (
             <Image
               src={avatarPreview}
               alt="Profile Picture"

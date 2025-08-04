@@ -8,12 +8,12 @@ async function main() {
   try {
     const uri = process.env.MONGO_URI!;
     if (!uri) {
-      console.error("❌ MONGO_URI is not set in .env");
+      console.error(" MONGO_URI is not set in .env");
       process.exit(1);
     }
 
     await mongoose.connect(uri);
-    console.log("✅ Connected to MongoDB");
+    console.log(" Connected to MongoDB");
 
     // --- Admin ---
     const adminEmail = "admin@gmail.com";

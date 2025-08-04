@@ -82,7 +82,7 @@ useEffect(() => {
   // Add student
   const onAddStudent = handleSubmit((data) => {
     toast.loading("Adding student...");
-    fetch("http://localhost:4000/api/admin/students", {
+    fetch("https://mini-student-management-system-1.onrender.com/api/admin/students", {
       method: "POST",
       headers: { "Content-Type": "application/json" ,
         Authorization: `Bearer ${localStorage.getItem("token")}`
@@ -110,7 +110,7 @@ useEffect(() => {
     if (!editingStudent) return;
 
     toast.loading("Updating student...");
-    fetch(`http://localhost:4000/api/admin/students/${editingStudent._id}`, {
+    fetch(`https://mini-student-management-system-1.onrender.com/api/admin/students/${editingStudent._id}`, {
       method: "PUT",
       headers: { "Content-Type": "application/json" ,
         Authorization: `Bearer ${localStorage.getItem("token")}`
@@ -138,7 +138,7 @@ useEffect(() => {
     if (!window.confirm("Are you sure you want to delete this student?")) return;
 
     toast.loading("Deleting...");
-    fetch(`http://localhost:4000/api/admin/students/${id}`, {
+    fetch(`https://mini-student-management-system-1.onrender.com/api/admin/students/${id}`, {
       headers: { "Content-Type": "application/json" ,
         Authorization: `Bearer ${localStorage.getItem("token")}`
       },
@@ -164,7 +164,7 @@ useEffect(() => {
     const newRole = student.role === "admin" ? "student" : "admin";
 
     toast.loading("Changing role...");
-    fetch(`http://localhost:4000/api/admin/users/${id}/role`, {
+    fetch(`https://mini-student-management-system-1.onrender.com/api/admin/users/${id}/role`, {
       method: "PATCH",
       headers: { "Content-Type": "application/json",
         Authorization: `Bearer ${localStorage.getItem("token")}`

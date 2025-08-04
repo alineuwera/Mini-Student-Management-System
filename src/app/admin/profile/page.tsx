@@ -23,7 +23,7 @@ export default function AdminProfile() {
 
   useEffect(() => {
     if (!token) return;
-    fetch("http://localhost:4000/api/users/me", {
+    fetch("https://mini-student-management-system-1.onrender.com/api/users/me", {
       headers: { Authorization: `Bearer ${token}` },
     })
       .then((res) => res.json())
@@ -35,7 +35,7 @@ export default function AdminProfile() {
           role: data.role || "",
         });
         if (data.imageUrl) {
-          setAvatarPreview(`http://localhost:4000${data.imageUrl}`);
+          setAvatarPreview(`https://mini-student-management-system-1.onrender.com/${data.imageUrl}`);
         }
       })
       .catch(() => toast.error("Failed to load profile"));
@@ -52,7 +52,7 @@ export default function AdminProfile() {
     const formData = new FormData();
     formData.append("avatar", file);
 
-    fetch("http://localhost:4000/api/users/me/profile-picture", {
+    fetch("https://mini-student-management-system-1.onrender.com/api/users/me/profile-picture", {
       method: "POST",
       headers: { Authorization: `Bearer ${token}` },
       body: formData,
@@ -60,14 +60,14 @@ export default function AdminProfile() {
       .then((res) => res.json())
       .then((data) => {
         toast.success("Profile picture updated");
-        setAvatarPreview(`http://localhost:4000${data.user.imageUrl}`);
+        setAvatarPreview(`https://mini-student-management-system-1.onrender.com${data.user.imageUrl}`);
       })
       .catch(() => toast.error("Failed to upload profile picture"));
   };
 
   const handleSave = () => {
     if (!token) return;
-    fetch("http://localhost:4000/api/users/me", {
+    fetch("https://mini-student-management-system-1.onrender.com/api/users/me", {
       method: "PUT",
       headers: {
         "Content-Type": "application/json",
