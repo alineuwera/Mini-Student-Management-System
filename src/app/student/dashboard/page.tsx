@@ -85,7 +85,7 @@ export default function StudentDashboard() {
     if (!file || !token) return;
 
     const formDataImage = new FormData();
-    formDataImage.append("file", file);
+    formDataImage.append("profilePicture", file);
 
     try {
       const res = await fetch(

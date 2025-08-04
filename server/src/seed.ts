@@ -13,7 +13,7 @@ async function main() {
     }
 
     await mongoose.connect(uri);
-    console.log("✅ Connected to MongoDB");
+    console.log("Connected to MongoDB");
 
     // --- Admin ---
     const adminEmail = "admin@gmail.com";
@@ -27,12 +27,12 @@ async function main() {
         email: adminEmail,
         phone: "0788000000",
         role: "admin",
-        password: hashedPwd, // <-- save as password
+        password: hashedPwd, 
         imageUrl: "",
       });
-      console.log(`✅ Admin created: ${adminEmail} / ${adminPwd}`);
+      console.log(`Admin created: ${adminEmail} / ${adminPwd}`);
     } else {
-      console.log(`ℹ️ Admin already exists: ${adminEmail}`);
+      console.log(`Admin already exists: ${adminEmail}`);
     }
 
     // --- Student #1 ---
@@ -52,9 +52,9 @@ async function main() {
         status: "Active",
         imageUrl: "",
       });
-      console.log(`✅ Student created: ${s1Email} / ${s1Pwd}`);
+      console.log(`Student created: ${s1Email} / ${s1Pwd}`);
     } else {
-      console.log(`ℹ️ Student already exists: ${s1Email}`);
+      console.log(`Student already exists: ${s1Email}`);
     }
 
     // --- Student #2 ---
@@ -74,14 +74,14 @@ async function main() {
         status: "Graduated",
         imageUrl: "",
       });
-      console.log(`✅ Student created: ${s2Email} / ${s2Pwd}`);
+      console.log(`Student created: ${s2Email} / ${s2Pwd}`);
     } else {
-      console.log(`ℹ️ Student already exists: ${s2Email}`);
+      console.log(`Student already exists: ${s2Email}`);
     }
 
-    console.log("🎉 Seeding complete.");
+    console.log("Seeding complete.");
   } catch (err) {
-    console.error("❌ Seeding error:", err);
+    console.error("Seeding error:", err);
     process.exit(1);
   } finally {
     await mongoose.disconnect();

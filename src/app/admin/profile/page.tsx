@@ -50,7 +50,7 @@ export default function AdminProfile() {
     if (!file || !token) return;
 
     const formData = new FormData();
-    formData.append("avatar", file);
+    formData.append("profilePicture", file);
 
     fetch("https://mini-student-management-system-1.onrender.com/api/users/me/profile-picture", {
       method: "POST",
