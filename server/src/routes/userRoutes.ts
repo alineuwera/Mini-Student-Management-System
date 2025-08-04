@@ -5,6 +5,9 @@ import { CloudinaryStorage } from "multer-storage-cloudinary";
 import { auth } from "../middleware/auth";
 import { User } from "../models/User";
 
+
+
+
 const router = express.Router();
 
 // Cloudinary Config
@@ -14,17 +17,18 @@ cloudinary.config({
   api_secret: process.env.CLOUDINARY_API_SECRET!,
 });
 
-// Cloudinary Storage Setup
 const storage = new CloudinaryStorage({
   cloudinary,
-  params: async (_req, _file) => {
-    return {
-      folder: "profile_pictures",
-      allowed_formats: ["jpg", "jpeg", "png", "webp"],
-      public_id: `${Date.now()}-profile`,
-    };
-  },
+ params: async (_req: Request, _file: Express.Multer.File) => {
+  return {
+    folder: "profile_pictures",
+    allowed_formats: ["jpg", "jpeg", "png", "webp"],
+    public_id: `${Date.now()}-profile`,
+  };
+},
+
 });
+
 
 const upload = multer({ storage });
 
