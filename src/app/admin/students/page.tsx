@@ -54,7 +54,7 @@ export default function AdminStudentPage() {
 
   // Load all students
 useEffect(() => {
-  fetch("/api/admin/students", { 
+  fetch("https://mini-student-management-system-1.onrender.com/api/admin/students", { 
     headers: { 
       "Content-Type": "application/json",
       Authorization: `Bearer ${localStorage.getItem("token")}`
