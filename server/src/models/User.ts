@@ -6,8 +6,8 @@ export interface IUser extends Document {
   phone?: string;
   role: "admin" | "student";
   passwordHash: string;
-  imageUrl?: string;                 // stored in DB
-  profilePicture?: string;           // virtual alias to imageUrl
+  imageUrl?: string;
+  profilePicture?: string;  // virtual alias
   course?: string;
   enrollmentYear?: number;
   status?: "Active" | "Graduated" | "Dropped";
@@ -20,7 +20,7 @@ const userSchema = new Schema<IUser>(
     phone: String,
     role: { type: String, enum: ["admin", "student"], default: "student" },
     passwordHash: { type: String, required: true },
-    imageUrl: String, // we persist this
+    imageUrl: String,
     course: String,
     enrollmentYear: Number,
     status: { type: String, enum: ["Active", "Graduated", "Dropped"] }
@@ -32,12 +32,12 @@ const userSchema = new Schema<IUser>(
   }
 );
 
-// Virtual alias so you can use profilePicture in API while storing imageUrl
+// Virtual alias for profilePicture
 userSchema.virtual("profilePicture")
-  .get(function (this: any) {
+  .get(function (this: IUser) {
     return this.imageUrl;
   })
-  .set(function (this: any, v: string) {
+  .set(function (this: IUser, v: string) {
     this.imageUrl = v;
   });
 
