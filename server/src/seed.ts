@@ -8,12 +8,12 @@ async function main() {
   try {
     const uri = process.env.MONGO_URI!;
     if (!uri) {
-      console.error(" MONGO_URI is not set in .env");
+      console.error("MONGO_URI is not set in .env");
       process.exit(1);
     }
 
     await mongoose.connect(uri);
-    console.log(" Connected to MongoDB");
+    console.log("✅ Connected to MongoDB");
 
     // --- Admin ---
     const adminEmail = "admin@gmail.com";
@@ -21,13 +21,14 @@ async function main() {
 
     let admin = await User.findOne({ email: adminEmail });
     if (!admin) {
+      const hashedPwd = await bcrypt.hash(adminPwd, 10);
       admin = await User.create({
         fullName: "Admin User",
         email: adminEmail,
         phone: "0788000000",
         role: "admin",
-        passwordHash: await bcrypt.hash(adminPwd, 10),
-        imageUrl: "", // optional default
+        password: hashedPwd, // <-- save as password
+        imageUrl: "",
       });
       console.log(`✅ Admin created: ${adminEmail} / ${adminPwd}`);
     } else {
@@ -39,12 +40,13 @@ async function main() {
     const s1Pwd = "alice@0000";
     let s1 = await User.findOne({ email: s1Email });
     if (!s1) {
+      const hashedPwd = await bcrypt.hash(s1Pwd, 10);
       s1 = await User.create({
         fullName: "Alice Uwimana",
         email: s1Email,
         phone: "0788123456",
         role: "student",
-        passwordHash: await bcrypt.hash(s1Pwd, 10),
+        password: hashedPwd, // <-- save as password
         course: "Software Engineering",
         enrollmentYear: 2023,
         status: "Active",
@@ -60,12 +62,13 @@ async function main() {
     const s2Pwd = "hope@0000";
     let s2 = await User.findOne({ email: s2Email });
     if (!s2) {
+      const hashedPwd = await bcrypt.hash(s2Pwd, 10);
       s2 = await User.create({
         fullName: "Hope Nishimwe",
         email: s2Email,
         phone: "0788234567",
         role: "student",
-        passwordHash: await bcrypt.hash(s2Pwd, 10),
+        password: hashedPwd, // <-- save as password
         course: "Data Science",
         enrollmentYear: 2022,
         status: "Graduated",
